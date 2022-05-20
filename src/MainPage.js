@@ -72,12 +72,13 @@ state={
               </div>
             </div>
             <div className="open-search">
-              <a href='#search' onClick={() => {this.setState({isSearchPageOn: 'yes'})}} onNavigate={() => this.setState({isSearchPageOn:'no'})}>Add a book</a>
+              <a href='#search' onClick={() => {this.setState({isSearchPageOn: 'yes'})}}>Add a book</a>
             </div>
           </div>)}
           {this.state.isSearchPageOn === 'yes' && (<SearchPage 
             books={this.props.books}
-            changeShelf={this.props.changeShelf}/>)}
+            changeShelf={this.props.changeShelf}
+            onNavigate={() => this.setState({isSearchPageOn:'no'})}/>)}
       </div>
         )
  }

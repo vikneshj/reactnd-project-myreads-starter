@@ -31,7 +31,7 @@ render () {
  return (
           <div className="search-books">
             <div className="search-books-bar">
-              <a href='#main' onClick={()=> this.props.onNavigate} className="close-search" >Close</a>
+              <a href='#main' onClick={()=> this.props.onNavigate()} className="close-search" >Close</a>
               <div className="search-books-input-wrapper">
                 {
                   

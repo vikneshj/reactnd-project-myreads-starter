@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
+import React from 'react'
 
-class Book extends Component {
-  render() {
+const Book = ({book, changeShelf, currentShelf}) => {
+ {
     let thumbnailUrl
-    if (this.props.book.imageLinks){
-thumbnailUrl = this.props.book.imageLinks.thumbnail
+    if (book.imageLinks){
+thumbnailUrl = book.imageLinks.thumbnail
     }else{
 thumbnailUrl = ''
     }
@@ -14,9 +14,9 @@ return(
   <div style={{width: 120, height: 180,backgroundImage: `url("${thumbnailUrl}")`}} > </div>
   <div className="book-shelf-changer">
                             <select
-                                onChange={(e) => this.props.changeShelf(this.props.book, 
+                                onChange={(e) => changeShelf(book, 
                                     e.target.value)}
-                                value={this.props.currentShelf}
+                                value={currentShelf}
                             >
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
@@ -26,8 +26,8 @@ return(
                             </select>
                         </div>
                         </div>
-  <div className="book-title">{this.props.book.title}</div>
-  <div className="book-Author">{this.props.book.authors}</div>
+  <div className="book-title">{book.title}</div>
+  <div className="book-Author">{book.authors}</div>
   </div>)
 }
  

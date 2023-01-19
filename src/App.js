@@ -1,51 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import MainPage from './MainPage'
 
-class BooksApp extends React.Component {
-  
-  state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    books: []
-  }
-  
-  componentDidMount() {
+function BooksApp () {
+
+  const [books,setBooks] = useState ([])
+
+
+  useEffect( () => {
     BooksAPI.getAll()
       .then((books) => {
-      this.setState({books:books});
+      setBooks(books);
     }
  )
-}
+});
 
-changeShelf = (book, shelf) => {
+const changeShelf = (book, shelf) => {
   BooksAPI.update(book, shelf)
 
   BooksAPI.getAll().then((books) => {
-    this.setState({ books: books })
+    setBooks(books)
   }
   )
 }
 
-  searchBook = () => {
-  
-  BooksAPI.search()}
-
-  render() {
     return (
       <div className="app">
         
-        <MainPage books={this.state.books}
-        changeShelf={this.changeShelf}/>
+        <MainPage books={books}
+        changeShelf={changeShelf}/>
 		
       </div>
     )
   }
-}
 
 export default BooksApp

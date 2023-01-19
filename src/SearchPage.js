@@ -1,37 +1,34 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 
-class SearchPage extends Component {
-  state = {
-    query: '',
-    matchedBooks: []
-  }
+const SearchPage = ({books,changeShelf,onNavigate}) => {
+  const [query, setQuery] = useState('');
+  const [matchedBooks, setMatchedBooks] = useState([]);
   
-  updateQuery = (query) => {
+  const updateQuery = (query) => {
   let trimmedQuery = query.trim()
-  this.setState({query: trimmedQuery})
-  this.fetchMatchedBooks(query)
+  setQuery(trimmedQuery)
+  fetchMatchedBooks(query)
   }
   
-  fetchMatchedBooks = (query) => {
+  const fetchMatchedBooks = (query) => {
   if (query.length !==0){
   	BooksAPI.search(query)
   		.then((matchedBooks)=>{
         if(matchedBooks.error) {
-          this.setState({matchedBooks: []})
+          setMatchedBooks([])
         }else{
-  		this.setState({matchedBooks:matchedBooks})}
+  		    setMatchedBooks(matchedBooks)}
   		})
   	}else{
-      this.setState({matchedBooks: []})
+      setMatchedBooks([])
   }}
   
-render () {
  return (
           <div className="search-books">
             <div className="search-books-bar">
-              <a href='#main' onClick={()=> this.props.onNavigate()} className="close-search" >Close</a>
+              <a href='#main' onClick={()=> onNavigate()} className="close-search" >Close</a>
               <div className="search-books-input-wrapper">
                 {
                   
@@ -44,40 +41,40 @@ render () {
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
                 <input type="text" placeholder="Search by title or author" 
-				value={this.state.query}
-				onChange={(event)=>this.updateQuery(event.target.value)}/>
+				value={query}
+				onChange={(event)=>updateQuery(event.target.value)}/>
               </div>
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-				{   
-                        this.state.matchedBooks.map(matchedBook => {
-                            let shelf = "none"
-                            this.props.books.forEach(book => {
-                                if (book.id !== matchedBook.id) {
-                                    matchedBook.shelf = "none"
-                                } else {
-                                    matchedBook.shelf = book.shelf
-                                }
-                            })
-                            
-                            return(
-                                <li key={matchedBook.id}>
-                                <Book 
-                                    book={matchedBook}
-                                    changeShelf={this.props.changeShelf}
-                                    currentShelf={shelf}
-                                />
-                            </li>
-                            )
-                        }
-                        )
+				        { 
+                  matchedBooks.map(matchedBook => {
+                    let shelf = "none"
+                    books.forEach(book => {
+                    if (book.id !== matchedBook.id) {
+                        matchedBook.shelf = "none"
+                    } else {
+                        matchedBook.shelf = book.shelf
                     }
-			  </ol>
+                    
+                  })
+                            
+                  return(
+                    <li key={matchedBook.id}>
+                      <Book 
+                        book={matchedBook}
+                        changeShelf={changeShelf}
+                        currentShelf={shelf}
+                      />
+                    </li>
+                  )
+                  }
+                  )
+                  }
+			        </ol>
             </div>
           </div>
         )
  }
-}
 
 export default SearchPage

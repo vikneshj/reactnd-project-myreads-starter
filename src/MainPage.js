@@ -1,16 +1,13 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import Book from './Book'
 import SearchPage from './SearchPage'
 
-class MainPage extends Component {
-state={
-  isSearchPageOn: 'no'
-}
+const MainPage = ({books,changeShelf}) => {
+const [isSearchPageOn, setIsSearchPageOn] = useState ('no');
 
- render () {
   return (
     <div>
-          {this.state.isSearchPageOn === 'no' && (
+          {isSearchPageOn === 'no' && (
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
@@ -21,10 +18,10 @@ state={
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                      {this.props.books.filter(book=> book.shelf ==='currentlyReading').map(book=> (
+                      {books.filter(book=> book.shelf ==='currentlyReading').map(book=> (
                         <li key={book.id}>
     						<Book book={book}
-                             changeShelf={this.props.changeShelf}
+                             changeShelf={changeShelf}
   							 />
                         </li>))
     				  }
@@ -35,13 +32,12 @@ state={
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                      {
-                      this.props.books.filter(book => book.shelf === 'wantToRead')
+                      {books.filter(book => book.shelf === 'wantToRead')
                       .map(book => (
                         <li key={book.id} >
                           <Book 
                             book={book}
-                            changeShelf={this.props.changeShelf}
+                            changeShelf={changeShelf}
                             
                           />
                         </li>
@@ -54,13 +50,12 @@ state={
                   <h2 className="bookshelf-title">Read</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                      {
-                      this.props.books.filter(book => book.shelf === 'read')
+                      {books.filter(book => book.shelf === 'read')
                       .map(book => (
                         <li key={book.id} >
                           <Book 
                             book={book}
-                            changeShelf={this.props.changeShelf}
+                            changeShelf={changeShelf}
                         
                           />
                         </li>
@@ -72,17 +67,17 @@ state={
               </div>
             </div>
             <div className="open-search">
-              <a href='#search' onClick={() => {this.setState({isSearchPageOn: 'yes'})}}>Add a book</a>
+              <a href='#search' onClick={() => {setIsSearchPageOn('yes')}}>Add a book</a>
             </div>
           </div>)}
-          {this.state.isSearchPageOn === 'yes' && (<SearchPage 
-            books={this.props.books}
-            changeShelf={this.props.changeShelf}
-            onNavigate={() => this.setState({isSearchPageOn:'no'})}/>)}
+          {isSearchPageOn === 'yes' && (<SearchPage 
+            books={books}
+            changeShelf={changeShelf}
+            onNavigate={() => setIsSearchPageOn('no')}/>)}
       </div>
         )
  }
-}
+
 
 
 export default MainPage;
